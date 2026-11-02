@@ -162,30 +162,22 @@
 </head>
 <body class="antialiased selection:bg-[#7A5A1E] selection:text-white">
 
-  <!-- TOP ANNOUNCEMENT BAR (Editable from Admin Tab 2) -->
-  <div id="promo-banner-bar" class="w-full py-2.5 px-4 text-center text-xs md:text-sm font-medium tracking-wide border-b border-brass-dynamic lux-elevated transition-all">
-    <div class="max-w-7xl mx-auto flex items-center justify-center gap-2">
-      <span class="inline-block w-2 h-2 rounded-full bg-[#7A5A1E] dark:bg-[#D9B76F] animate-pulse"></span>
-      <span id="promo-banner-text">Complimentary Digital Eye Refraction Exam with Any Bespoke Frame & Lens Order — Al Nahyan, Abu Dhabi</span>
-    </div>
-  </div>
-
-  <!-- STICKY LUXURY HEADER -->
-  <header class="sticky top-0 z-40 backdrop-blur-xl bg-[#F6F1E7]/85 dark:bg-[#09100D]/85 border-b border-brass-dynamic transition-colors">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-3">
+  <!-- STICKY ULTRA-CLEAN LUXURY HEADER (Mobile-First Ergonomics: Logo + Menu on Mobile; Controls in Drawer) -->
+  <header class="sticky top-0 z-40 backdrop-blur-xl bg-[#F6F1E7]/90 dark:bg-[#09100D]/90 border-b border-brass-dynamic transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2">
       
-      <!-- Brand Identity -->
-      <a href="#hero" class="flex items-center gap-3 group">
-        <div class="w-11 h-11 rounded-full lux-surface flex items-center justify-center border border-[#7A5A1E]/30 shadow-sm">
-          <svg class="w-6 h-6 text-brass-dynamic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <!-- Brand Identity (Single-line protected against browser auto-translate breaking layout) -->
+      <a href="#hero" translate="no" class="notranslate flex items-center gap-2.5 min-w-0 shrink-0">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full lux-surface flex items-center justify-center border border-[#7A5A1E]/30 shadow-sm shrink-0">
+          <svg class="w-5 h-5 text-brass-dynamic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <circle cx="6.5" cy="14" r="3.5"/>
             <circle cx="17.5" cy="14" r="3.5"/>
             <path d="M10 14h4M3 14V9.5A2.5 2.5 0 0 1 5.5 7M21 14V9.5A2.5 2.5 0 0 0 18.5 7"/>
           </svg>
         </div>
-        <div>
-          <span class="block font-display text-xl sm:text-2xl font-semibold tracking-tight leading-none">BEST OPTICALS</span>
-          <span class="block text-[10px] uppercase tracking-[0.25em] text-brass-dynamic mt-0.5" data-i18n="brandSub">Branch 3 · Al Nahyan · Abu Dhabi</span>
+        <div class="truncate">
+          <span class="block font-display text-lg sm:text-2xl font-semibold tracking-tight leading-none whitespace-nowrap">BEST OPTICALS</span>
+          <span class="block text-[9px] sm:text-[10px] uppercase tracking-[0.22em] text-brass-dynamic mt-0.5 whitespace-nowrap" data-i18n="brandSub">Br.3 · Al Nahyan · Abu Dhabi</span>
         </div>
       </a>
 
@@ -197,26 +189,25 @@
         <a href="#location" class="hover:text-brass-dynamic transition-colors" data-i18n="navLocation">Al Nahyan Showroom</a>
       </nav>
 
-      <!-- Action Controls (Admin Pill, Language, Theme, WhatsApp Icon-Only, Book CTA, Mobile Drawer Toggle) -->
-      <div class="flex items-center gap-2 sm:gap-2.5">
+      <!-- Right Controls: Desktop shows full bar; Mobile shows ONLY Admin Pill + Hamburger Drawer (Zero clutter) -->
+      <div class="flex items-center gap-2 shrink-0">
         
-        <!-- Golden Admin Pill (Unlocked when authenticated, or subtle lock icon to login) -->
-        <button id="admin-header-btn" onclick="handleAdminTrigger()" class="px-3 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase flex items-center gap-1.5 border border-[#7A5A1E]/40 bg-[#7A5A1E]/10 text-brass-dynamic hover:bg-[#7A5A1E] hover:text-white transition-all" title="Owner Mobile Admin Panel">
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <!-- Golden Admin Pill -->
+        <button id="admin-header-btn" onclick="handleAdminTrigger()" translate="no" class="notranslate h-9 px-3 rounded-full text-[11px] font-semibold tracking-wider uppercase flex items-center gap-1.5 border border-[#7A5A1E]/40 bg-[#7A5A1E]/10 text-brass-dynamic hover:bg-[#7A5A1E] hover:text-white transition-all" title="Owner Mobile Admin Panel">
+          <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
           </svg>
           <span id="admin-pill-label" class="hidden sm:inline">Admin</span>
         </button>
 
-        <!-- Language Switcher (EN / AR) -->
-        <button onclick="toggleLanguage()" id="lang-toggle-btn" class="w-10 h-10 rounded-full btn-pill-outline flex items-center justify-center text-xs font-bold tracking-wider" aria-label="Switch Language">
+        <!-- Language Switcher (Desktop only — on Mobile it lives cleanly inside the Drawer) -->
+        <button onclick="toggleLanguage()" id="lang-toggle-btn" translate="no" class="notranslate hidden lg:flex w-10 h-10 rounded-full btn-pill-outline items-center justify-center text-xs font-bold tracking-wider" aria-label="Switch Language">
           عربي
         </button>
 
-        <!-- Dual Theme Switcher (Light-First / Dark Mode) -->
-        <button onclick="toggleTheme()" id="theme-toggle-btn" class="w-10 h-10 rounded-full btn-pill-outline flex items-center justify-center" aria-label="Switch Theme">
-          <!-- Sun/Moon icon updated by JS -->
+        <!-- Dual Theme Switcher (Desktop only — on Mobile it lives cleanly inside the Drawer) -->
+        <button onclick="toggleTheme()" id="theme-toggle-btn" class="hidden lg:flex w-10 h-10 rounded-full btn-pill-outline items-center justify-center" aria-label="Switch Theme">
           <svg id="theme-icon-moon" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
           </svg>
@@ -233,21 +224,14 @@
           </svg>
         </button>
 
-        <!-- STRICT RULE 5: WHATSAPP ICON ONLY (Zero text, zero phone numbers) -->
-        <a href="https://wa.me/971527376342" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-md hover:scale-105 transition-transform">
-          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.625.846 5.059 2.284 7.033l-1.492 5.451 5.601-1.469c1.903 1.044 4.088 1.638 6.412 1.638 6.627 0 12-5.373 12-12s-5.373-12-12-12z"/>
-          </svg>
-        </a>
-
-        <!-- Sober CTA Button (Rule 8: Exclusively "Book Appointment") -->
-        <button onclick="openBookingModal('Comprehensive Digital Optometry & Refraction Exam', 150)" class="hidden sm:inline-flex px-5 py-2.5 rounded-full btn-pill-sand text-xs font-semibold tracking-wider uppercase" data-i18n="btnBookAppointment">
+        <!-- Desktop Sober CTA -->
+        <button onclick="openBookingModal('Comprehensive Digital Optometry & Refraction Exam', 150)" class="hidden lg:inline-flex px-5 py-2.5 rounded-full btn-pill-sand text-xs font-semibold tracking-wider uppercase" data-i18n="btnBookAppointment">
           Book Appointment
         </button>
 
-        <!-- Mobile Hamburger Button -->
-        <button onclick="toggleMobileDrawer(true)" class="lg:hidden w-10 h-10 rounded-full btn-pill-outline flex items-center justify-center" aria-label="Open Menu">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <!-- Mobile Hamburger Button (Clean thumb-accessible trigger) -->
+        <button onclick="toggleMobileDrawer(true)" class="lg:hidden w-9 h-9 rounded-full btn-pill-outline flex items-center justify-center" aria-label="Open Menu">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
             <line x1="4" y1="7" x2="20" y2="7"></line>
             <line x1="4" y1="12" x2="20" y2="12"></line>
             <line x1="4" y1="17" x2="14" y2="17"></line>
@@ -257,12 +241,12 @@
     </div>
   </header>
 
-  <!-- MOBILE SLIDE-OUT DRAWER (Thumb-Friendly Ergonomics) -->
+  <!-- MOBILE SLIDE-OUT DRAWER (Thumb-Friendly Ergonomics: Includes Theme & Language Toggles per Rule 8.1) -->
   <div id="mobile-drawer-backdrop" onclick="toggleMobileDrawer(false)" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300"></div>
   <aside id="mobile-drawer" class="fixed top-0 right-0 bottom-0 z-50 w-[84vw] max-w-sm lux-surface p-6 flex flex-col justify-between translate-x-full transition-transform duration-300 ease-out">
     <div>
-      <div class="flex items-center justify-between pb-6 border-b border-brass-dynamic">
-        <div>
+      <div class="flex items-center justify-between pb-5 border-b border-brass-dynamic">
+        <div translate="no" class="notranslate">
           <span class="font-display text-xl font-semibold">BEST OPTICALS</span>
           <span class="block text-[10px] uppercase tracking-[0.22em] text-brass-dynamic">Br.3 · Al Nahyan, Abu Dhabi</span>
         </div>
@@ -274,7 +258,7 @@
         </button>
       </div>
 
-      <nav class="mt-8 flex flex-col gap-5 text-lg font-display font-medium">
+      <nav class="mt-6 flex flex-col gap-4 text-lg font-display font-medium">
         <a href="#catalog" onclick="toggleMobileDrawer(false)" class="py-2 border-b border-brass-dynamic flex items-center justify-between" data-i18n="navCatalog">
           <span>Collections & Services</span>
           <span>→</span>
@@ -293,23 +277,23 @@
         </a>
       </nav>
 
-      <!-- Quick Theme & Language Toggles inside Mobile Drawer -->
-      <div class="mt-8 grid grid-cols-2 gap-3">
-        <button onclick="toggleTheme()" class="py-3 px-4 rounded-2xl btn-pill-outline text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2">
-          <span>Theme</span>
+      <!-- Theme & Language Toggles inside Mobile Drawer (Rule 8.1) -->
+      <div class="mt-6 grid grid-cols-2 gap-3" translate="no">
+        <button onclick="toggleTheme()" class="notranslate py-3 px-4 rounded-2xl btn-pill-outline text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2">
+          <span>Light / Dark</span>
           <span>◐</span>
         </button>
-        <button onclick="toggleLanguage()" class="py-3 px-4 rounded-2xl btn-pill-outline text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2">
+        <button onclick="toggleLanguage()" class="notranslate py-3 px-4 rounded-2xl btn-pill-outline text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2">
           <span>EN / عربي</span>
         </button>
       </div>
     </div>
 
-    <div class="pt-6 border-t border-brass-dynamic flex items-center gap-3">
+    <div class="pt-5 border-t border-brass-dynamic flex items-center gap-3">
       <button onclick="toggleMobileDrawer(false); openBookingModal('Comprehensive Digital Optometry & Refraction Exam', 150);" class="flex-1 py-3.5 rounded-full btn-pill-sand text-xs font-semibold uppercase tracking-wider" data-i18n="btnBookAppointment">
         Book Appointment
       </button>
-      <a href="https://wa.me/971527376342" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="w-12 h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg">
+      <a href="https://wa.me/971527376342" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="w-12 h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg shrink-0">
         <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
           <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.625.846 5.059 2.284 7.033l-1.492 5.451 5.601-1.469c1.903 1.044 4.088 1.638 6.412 1.638 6.627 0 12-5.373 12-12s-5.373-12-12-12z"/>
         </svg>
@@ -317,108 +301,80 @@
     </div>
   </aside>
 
-  <!-- HERO SECTION WITH USER'S DOWNLOADED VIDEO (Optica.mp4) & THE NOVA CLINIC AESTHETIC -->
-  <section id="hero" class="relative pt-6 pb-16 md:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+  <!-- CINEMATIC ABOVE-THE-FOLD HERO VIDEO SECTION (Optica.mp4 Immediately Visible on Mobile & Desktop — Nova Clinic DNA) -->
+  <section id="hero" class="px-3 sm:px-6 lg:px-8 pt-3 pb-10 max-w-7xl mx-auto">
+    
+    <!-- Full-Bleed Architectural Video Stage -->
+    <div class="relative rounded-3xl overflow-hidden min-h-[76vh] sm:min-h-[80vh] flex flex-col justify-between p-5 sm:p-10 lg:p-14 shadow-2xl border border-brass-dynamic bg-[#09100D]">
       
-      <!-- Left Editorial Column (7 cols) -->
-      <div class="lg:col-span-7 space-y-6">
-        
-        <!-- Verified Google Maps Rating Pill -->
-        <a href="https://maps.app.goo.gl/ufUHupFaQS8rC77h8" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full lux-surface text-xs font-medium hover:border-[#7A5A1E] transition-all">
-          <span class="flex items-center text-[#D99B26] tracking-tighter text-sm">★★★★★</span>
+      <!-- Hero Video Playing Immediately in Background (Optica.mp4) -->
+      <video
+        id="hero-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        webkit-playsinline
+        preload="auto"
+        class="absolute inset-0 w-full h-full object-cover z-0"
+      >
+        <source src="assets/hero-optica.mp4" type="video/mp4" />
+      </video>
+
+      <!-- Satin Luxury Editorial Gradient Overlay for Perfect Readability -->
+      <div class="absolute inset-0 bg-gradient-to-t from-[#09100D]/90 via-[#09100D]/35 to-[#09100D]/25 z-10 pointer-events-none"></div>
+
+      <!-- Top Bar Inside Video Frame: Google Maps 4.8★ Pill + Audio Toggle -->
+      <div class="relative z-20 flex items-center justify-between gap-2">
+        <a href="https://maps.app.goo.gl/ufUHupFaQS8rC77h8" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-full backdrop-blur-md bg-[#FFFDF8]/90 text-[#14201B] text-[11px] sm:text-xs font-semibold shadow-md hover:scale-[1.02] transition-transform">
+          <span class="text-[#D99B26] tracking-tighter">★★★★★</span>
           <span class="font-bold">4.8</span>
-          <span class="opacity-75" data-i18n="heroVerifiedBadge">· 47 Verified Reviews on Google Maps · Al Nahyan</span>
-          <svg class="w-3.5 h-3.5 text-brass-dynamic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M7 17L17 7M7 7h10v10"/>
-          </svg>
+          <span class="opacity-80" data-i18n="heroVerifiedBadge">· 47 Reviews on Google Maps</span>
         </a>
 
-        <!-- Ultra-Fine Display Headline -->
-        <h1 class="font-display text-4xl sm:text-6xl lg:text-[4.25rem] font-normal leading-[1.06] tracking-tight">
+        <button onclick="toggleHeroVideoSound()" id="video-sound-btn" class="w-10 h-10 rounded-full backdrop-blur-md bg-[#FFFDF8]/85 text-[#14201B] flex items-center justify-center shadow-md shrink-0" title="Mute / Unmute Video">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Bottom Editorial Content Over Video -->
+      <div class="relative z-20 max-w-2xl space-y-4 sm:space-y-5 pt-28 text-[#F6F1E7]">
+        <span class="inline-block text-[10px] sm:text-xs uppercase tracking-[0.28em] text-[#D9B76F] font-semibold">
+          Sheikh Rashid Bin Saeed St · Al Nahyan · Abu Dhabi
+        </span>
+
+        <h1 class="font-display text-3xl sm:text-5xl lg:text-6xl font-normal leading-[1.08] tracking-tight text-white">
           <span data-i18n="heroTitlePart1">Architectural Vision &</span>
-          <span class="italic font-semibold text-brass-dynamic block mt-1" data-i18n="heroTitlePart2">Clinical Optical Mastery.</span>
+          <span class="italic font-semibold text-[#D9B76F] block mt-0.5" data-i18n="heroTitlePart2">Clinical Optical Mastery.</span>
         </h1>
 
-        <p class="text-base sm:text-lg opacity-80 max-w-2xl leading-relaxed font-light" data-i18n="heroSubtitle">
-          Located on Sheikh Rashid Bin Saeed Street in Al Nahyan, Best Opticals Br.3 pairs precision digital refraction and bespoke high-index lens engineering with curated titanium and Italian acetate eyewear.
+        <p class="text-xs sm:text-base text-[#F2EDE0]/90 max-w-xl leading-relaxed font-light" data-i18n="heroSubtitle">
+          Precision digital refraction, bespoke high-index lens engineering, and curated titanium & Italian acetate eyewear in the heart of Abu Dhabi.
         </p>
 
-        <!-- Primary Action Row (Sober CTA + Icon-Only WhatsApp + Direct Maps) -->
-        <div class="pt-2 flex flex-wrap items-center gap-3.5">
-          <button onclick="openBookingModal('Comprehensive Digital Optometry & Refraction Exam', 150)" class="px-8 py-4 rounded-full btn-pill-sand text-xs sm:text-sm font-semibold uppercase tracking-[0.16em] shadow-lg" data-i18n="btnBookAppointment">
+        <!-- Clean Single-Line Action Row -->
+        <div class="pt-2 flex items-center gap-3">
+          <button onclick="openBookingModal('Comprehensive Digital Optometry & Refraction Exam', 150)" class="px-7 py-3.5 sm:px-8 sm:py-4 rounded-full bg-[#F6F1E7] text-[#14201B] hover:bg-[#D9B76F] transition-colors text-xs font-semibold uppercase tracking-[0.16em] shadow-xl" data-i18n="btnBookAppointment">
             Book Appointment
           </button>
 
-          <a href="#catalog" class="px-6 py-4 rounded-full btn-pill-outline text-xs sm:text-sm font-semibold uppercase tracking-[0.14em]" data-i18n="btnExploreCatalog">
-            Explore Eyewear & Care
+          <a href="#catalog" class="px-5 py-3.5 sm:px-6 sm:py-4 rounded-full backdrop-blur-md bg-white/15 border border-white/25 text-white hover:bg-white/25 transition-colors text-xs font-semibold uppercase tracking-[0.14em]" data-i18n="btnExploreCatalog">
+            Explore Collection
           </a>
-
-          <!-- STRICT RULE 5: Icon-only WhatsApp button -->
-          <a href="https://wa.me/971527376342" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="w-13 h-13 p-3.5 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform">
-            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-              <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.625.846 5.059 2.284 7.033l-1.492 5.451 5.601-1.469c1.903 1.044 4.088 1.638 6.412 1.638 6.627 0 12-5.373 12-12s-5.373-12-12-12z"/>
-            </svg>
-          </a>
-        </div>
-
-        <!-- Key Clinical Pillars -->
-        <div class="pt-6 grid grid-cols-3 gap-4 border-t border-brass-dynamic">
-          <div>
-            <p class="font-display text-2xl sm:text-3xl font-semibold text-brass-dynamic">4.8 ★</p>
-            <p class="text-xs opacity-75 mt-0.5" data-i18n="statReviews">47 Google Reviews</p>
-          </div>
-          <div>
-            <p class="font-display text-2xl sm:text-3xl font-semibold text-brass-dynamic">30 Min</p>
-            <p class="text-xs opacity-75 mt-0.5" data-i18n="statExpress">Express Lens Fitting</p>
-          </div>
-          <div>
-            <p class="font-display text-2xl sm:text-3xl font-semibold text-brass-dynamic">100%</p>
-            <p class="text-xs opacity-75 mt-0.5" data-i18n="statUV">UV400 & Blue-Light</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right Column: Classical Arch Frame Video Hero (Optica.mp4 from Downloads) -->
-      <div class="lg:col-span-5">
-        <div class="relative mx-auto max-w-md lg:max-w-none">
-          <!-- Decorative Brass Halo -->
-          <div class="absolute -inset-2.5 arch-frame border border-[#7A5A1E]/30 dark:border-[#D9B76F]/30 pointer-events-none"></div>
-          
-          <div class="relative arch-frame overflow-hidden aspect-[4/5] lux-surface shadow-2xl">
-            <video
-              id="hero-video"
-              src="assets/hero-optica.mp4"
-              poster="assets/boutique_interior.png"
-              autoplay
-              muted
-              loop
-              playsinline
-              preload="auto"
-              class="w-full h-full object-cover"
-            ></video>
-            
-            <!-- Subtle Satin Gradient Overlay -->
-            <div class="absolute inset-0 bg-gradient-to-t from-[#09100D]/75 via-transparent to-transparent"></div>
-
-            <!-- Floating Glass Badge Inside Video Frame -->
-            <div class="absolute bottom-5 left-5 right-5 p-4 rounded-2xl backdrop-blur-md bg-[#FFFDF8]/90 dark:bg-[#121D18]/90 border border-[#7A5A1E]/25 flex items-center justify-between gap-3">
-              <div>
-                <p class="text-[10px] uppercase tracking-[0.22em] text-brass-dynamic font-semibold" data-i18n="heroVideoBadgeSub">Sheikh Rashid Bin Saeed St</p>
-                <p class="font-display text-lg font-semibold leading-snug" data-i18n="heroVideoBadgeTitle">Best Opticals Br.3 · Al Nahyan</p>
-              </div>
-              <button onclick="toggleHeroVideoSound()" id="video-sound-btn" class="w-10 h-10 rounded-full btn-pill-outline flex items-center justify-center shrink-0" title="Mute / Unmute Video">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                </svg>
-              </button>
-            </div>
-          </div>
         </div>
       </div>
 
     </div>
+
+    <!-- Subtle Promo Pill Below Hero (Editable from Admin Tab 2, never crowds the top header) -->
+    <div id="promo-banner-bar" class="mt-4 py-2.5 px-4 rounded-2xl text-center text-xs font-medium tracking-wide lux-elevated flex items-center justify-center gap-2">
+      <span class="inline-block w-2 h-2 rounded-full bg-[#7A5A1E] dark:bg-[#D9B76F] animate-pulse shrink-0"></span>
+      <span id="promo-banner-text">Complimentary Digital Eye Refraction Exam with Any Bespoke Frame & Lens Order — Al Nahyan, Abu Dhabi</span>
+    </div>
+
   </section>
 
   <!-- SATIN INTERNATIONAL OPTICAL STANDARDS MARQUEE -->
@@ -1508,10 +1464,17 @@
       reader.readAsText(file);
     }
 
-    // Instant 0ms Boot + Background Supabase Sync
+    // Instant 0ms Boot + Background Supabase Sync + Immediate Mobile Video Autoplay
     document.addEventListener('DOMContentLoaded', () => {
       if (isAdminAuthenticated) {
         document.getElementById('admin-pill-label').textContent = 'Admin Active ✦';
+      }
+      const hv = document.getElementById('hero-video');
+      if (hv) {
+        hv.muted = true;
+        hv.play().catch(() => {
+          document.addEventListener('touchstart', () => hv.play(), { once: true });
+        });
       }
       renderAll();
       syncFromSupabase(false);
