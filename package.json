@@ -1,0 +1,12 @@
+{
+  "name": "best-opticals-abudhabi",
+  "version": "1.0.0",
+  "description": "Best Opticals Br.3 — Luxury Optometry & Bespoke Eyewear Atelier in Al Nahyan, Abu Dhabi",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
