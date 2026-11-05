@@ -1,13 +1,14 @@
 /**
- * Tecnoemprende & Jota Beta — Universal Headless Spy Telemetry Engine v4 (Anti-Bot & Human Proof-of-Interaction)
+ * Tecnoemprende & Jota Beta — Universal Headless Spy Telemetry Engine v5
+ * (Deep Passive Visitor Intelligence + Anti-Bot + Zero On-Site UI)
  *
- * SECURITY & ANTI-NOISE ARCHITECTURE:
- *  1. ZERO UI / ZERO MODAL on client websites. Accessible EXCLUSIVELY in Jota Online (/#/espia) & Jota Desktop.
- *  2. Automatic Exclusion of David's IPs (IPv4 & IPv6) and Admin Browser IDs.
- *  3. Strict Anti-Bot & Headless Browser Filter (blocks WebDriver, HeadlessChrome, Crawlers, Link Previewers, and Cloud/Datacenter Scanner ASNs like AWS, GCP, Azure, Censys, Shodan, M247, OVH, Hetzner).
- *  4. Mandatory Real Human Proof-of-Interaction + Minimum 4-Second Dwell Time Gate:
- *     Never records 1s-2s automated bounces or passive scanner pings. A visit is ONLY recorded after a real human
- *     physically interacts (touch, scroll, pointer/mouse movement, or click) AND stays >= 4 seconds (or triggers a conversion).
+ * STRICT PRIVACY & VISIBILITY INVARIANTS:
+ *  1. 100% INVISIBLE ON WEBSITES: Never renders any panel, badge, modal, or overlay on any webpage
+ *     (not even with ?admin=david, ?view=spy, or Alt+S). All telemetry is visible EXCLUSIVELY inside Jota Beta (/#/espia).
+ *  2. ZERO BROWSER ALERTS / ZERO PERMISSION POPUPS: Uses only 100% passive standard APIs
+ *     (IntersectionObserver, Scroll, Selection/Copy on page, WebGL renderer, Intl TimeZone, Navigator Languages/Hardware, Passive IP/ISP).
+ *  3. Automatic Exclusion of David's IPs (IPv4 & IPv6) and Admin Browser IDs.
+ *  4. Mandatory Real Human Proof-of-Interaction + 4-Second Dwell Gate.
  */
 (function () {
   const CONFIG = {
@@ -46,13 +47,21 @@
       'digitalocean', 'hetzner', 'ovh', 'choopa', 'vultr', 'linode', 'akamai',
       'censys', 'shodan', 'leaseweb', 'm247', 'datacamp', 'cloudflare', 'fastly',
       'facebook', 'meta platforms', 'quasi networks', 'frantech', 'contabo',
-      'tzulo', 'performive', 'multacom', ' Stark ', 'scaleway', 'upcloud',
+      'tzulo', 'performive', 'multacom', 'scaleway', 'upcloud',
       'alibaba', 'tencent', 'oracle cloud', 'ibm cloud', 'hosting', 'datacenter',
       'server', 'colocation', 'vpn', 'proxy'
     ]
   };
 
-  // Immediate Bot / Headless / Crawler Rejection
+  // Remove any legacy on-page panel immediately and permanently
+  function purgeAnyOnSiteUi() {
+    const ids = ['tecno-universal-spy-panel', 'spy-floating-panel', 'jota-spy-overlay'];
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.remove();
+    });
+  }
+
   function isAutomatedBotEnv() {
     const ua = (navigator.userAgent || '').toLowerCase();
     if (!ua) return true;
@@ -73,9 +82,11 @@
         category: window.SPY_SITE_CATEGORY || 'dubai'
       };
     }
+    const hostPath = (window.location.pathname || '/').replace(/^\/+|\/+$/g, '').split('/')[0];
+    const cleanTitle = (document.title || hostPath || 'sitio-web').trim();
     return {
-      siteId: 'best-opticals-abudhabi',
-      siteName: 'Best Opticals Br.3 — Luxury Optometry & Eyewear Abu Dhabi',
+      siteId: hostPath || 'sitio-general',
+      siteName: cleanTitle.slice(0, 90),
       category: 'dubai'
     };
   }
@@ -83,7 +94,8 @@
   const { siteId, siteName, category } = detectSiteMetadata();
   const urlParams = new URLSearchParams(window.location.search);
 
-  if (urlParams.get('admin') === 'david') {
+  // Silent Admin Exclusion (never shows any UI on the page)
+  if (urlParams.get('admin') === 'david' || urlParams.get('view') === 'spy') {
     localStorage.setItem('tecno_spy_admin_excluded', 'true');
   }
 
@@ -97,7 +109,6 @@
   }
 
   const visitorId = getOrCreateVisitorId();
-
   if (CONFIG.excludedVisitorIds.includes(visitorId)) {
     localStorage.setItem('tecno_spy_admin_excluded', 'true');
   }
@@ -123,15 +134,91 @@
     return next;
   }
 
+  // Passive Hardware, Screen & GPU Fingerprinting (Zero Permission Prompts)
+  function getGpuShortName() {
+    try {
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      if (!gl) return '';
+      const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+      if (!dbg) return '';
+      const raw = String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) || '');
+      return raw
+        .replace(/ANGLE \((.+)\)/i, '$1')
+        .replace(/Direct3D11.*$/i, '')
+        .replace(/Mesa /i, '')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .slice(0, 38);
+    } catch (e) {
+      return '';
+    }
+  }
+
   function getDeviceInfo() {
     const ua = navigator.userAgent || '';
-    if (/iPhone/i.test(ua)) return 'Apple iPhone';
-    if (/iPad/i.test(ua)) return 'Apple iPad';
-    if (/Android/i.test(ua)) return 'Android Smartphone';
-    if (/Macintosh/i.test(ua)) return 'Apple Mac';
-    if (/Windows/i.test(ua)) return 'Windows PC';
-    if (/Linux/i.test(ua)) return 'Linux PC';
-    return 'Dispositivo Web';
+    let base = 'Dispositivo Web';
+    if (/iPhone/i.test(ua)) base = 'Apple iPhone';
+    else if (/iPad/i.test(ua)) base = 'Apple iPad';
+    else if (/Android/i.test(ua)) {
+      const m = ua.match(/Android\s+[\d.]+;\s*([^;)]+)/i);
+      const model = m && m[1] ? m[1].trim() : '';
+      base = model && model !== 'K' ? `Android (${model.slice(0, 22)})` : 'Android Smartphone';
+    } else if (/Macintosh/i.test(ua)) base = 'Apple Mac';
+    else if (/Windows/i.test(ua)) base = 'Windows PC';
+    else if (/Linux/i.test(ua)) base = 'Linux PC';
+
+    const dpr = window.devicePixelRatio ? `${Math.round(window.devicePixelRatio * 10) / 10}x` : '';
+    const scr = window.screen ? `${window.screen.width}x${window.screen.height}` : '';
+    const cores = navigator.hardwareConcurrency ? `${navigator.hardwareConcurrency}c` : '';
+    const ram = navigator.deviceMemory ? `${navigator.deviceMemory}GB` : '';
+    const hwParts = [scr, dpr, cores, ram].filter(Boolean).join(' • ');
+    return hwParts ? `${base} (${hwParts})` : base;
+  }
+
+  function getOriginAndProspectAttribution() {
+    const ua = navigator.userAgent || '';
+    const ref = document.referrer || '';
+    const prospectParam =
+      urlParams.get('v') ||
+      urlParams.get('lead') ||
+      urlParams.get('prospect') ||
+      urlParams.get('client') ||
+      urlParams.get('nombre') ||
+      urlParams.get('name') ||
+      '';
+    const utmSource = urlParams.get('utm_source') || '';
+    const utmCampaign = urlParams.get('utm_campaign') || '';
+
+    let channel = 'Directo / Enlace';
+    if (utmSource) {
+      channel = utmSource + (utmCampaign ? ` (${utmCampaign})` : '');
+    } else if (urlParams.get('fbclid') || /FBAN|FBAV/i.test(ua) || /facebook\.com/i.test(ref)) {
+      channel = 'Facebook';
+    } else if (/Instagram/i.test(ua) || /instagram\.com/i.test(ref)) {
+      channel = 'Instagram';
+    } else if (/WhatsApp/i.test(ua) || /whatsapp\.com|wa\.me/i.test(ref)) {
+      channel = 'WhatsApp';
+    } else if (urlParams.get('gclid') || /google\./i.test(ref)) {
+      channel = 'Google Search / Maps';
+    } else if (/t\.co|twitter\.com|x\.com/i.test(ref)) {
+      channel = 'X / Twitter';
+    } else if (/linkedin\.com|LinkedInApp/i.test(ua + ' ' + ref)) {
+      channel = 'LinkedIn';
+    } else if (/tiktok/i.test(ua + ' ' + ref) || urlParams.get('ttclid')) {
+      channel = 'TikTok';
+    } else if (ref) {
+      try {
+        channel = 'Ref: ' + new URL(ref).hostname.replace(/^www\./, '');
+      } catch (e) {
+        channel = ref.slice(0, 60);
+      }
+    }
+
+    if (prospectParam) {
+      return `🎯 Prospecto: ${prospectParam.slice(0, 40)} | ${channel}`;
+    }
+    return channel;
   }
 
   const sessionKey = 'tecno_spy_sess_' + siteId;
@@ -150,12 +237,180 @@
   } catch (e) {
     conversionEvents = [];
   }
+
   let clientGeo = { ip: 'direct', city: 'Visitante', country: 'Externo', isp: '' };
   let isTrackingActive = false;
   let hasHumanInteracted = false;
   let hasPassedDwellGate = false;
   let geoReady = false;
   let isBlockedSource = false;
+
+  // Deep Passive Telemetry State
+  let maxScrollPct = 0;
+  let activeVisibleSec = 0;
+  let currentVisibleSections = new Set();
+  const sectionDwellSeconds = {};
+  let batteryStatusText = '';
+  const gpuName = getGpuShortName();
+  const systemTimeZone = (() => {
+    try {
+      return Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+    } catch (e) {
+      return '';
+    }
+  })();
+  const deviceLanguages = (() => {
+    try {
+      return (navigator.languages || [navigator.language]).filter(Boolean).slice(0, 3).join(', ');
+    } catch (e) {
+      return '';
+    }
+  })();
+  const networkConnectionText = (() => {
+    try {
+      const c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      if (!c) return '';
+      const parts = [];
+      if (c.effectiveType) parts.push(String(c.effectiveType).toUpperCase());
+      if (typeof c.downlink === 'number' && c.downlink > 0) parts.push(`${c.downlink} Mbps`);
+      return parts.join(' • ');
+    } catch (e) {
+      return '';
+    }
+  })();
+
+  if (navigator.getBattery) {
+    try {
+      navigator.getBattery().then((bat) => {
+        if (bat && typeof bat.level === 'number') {
+          const pct = Math.round(bat.level * 100);
+          batteryStatusText = `${pct}%${bat.charging ? ' ⚡' : ''}`;
+        }
+      }).catch(() => {});
+    } catch (e) {}
+  }
+
+  function updateScrollDepth() {
+    try {
+      const docEl = document.documentElement;
+      const body = document.body;
+      const scrollTop = window.scrollY || docEl.scrollTop || body.scrollTop || 0;
+      const winH = window.innerHeight || docEl.clientHeight || 1;
+      const fullH = Math.max(
+        body.scrollHeight || 0,
+        docEl.scrollHeight || 0,
+        body.offsetHeight || 0,
+        docEl.offsetHeight || 0,
+        1
+      );
+      if (fullH <= winH) {
+        maxScrollPct = Math.max(maxScrollPct, 100);
+      } else {
+        const pct = Math.min(100, Math.round(((scrollTop + winH) / fullH) * 100));
+        if (pct > maxScrollPct) maxScrollPct = pct;
+      }
+    } catch (e) {}
+  }
+
+  function resolveSectionLabel(el, idx) {
+    if (!el) return `Sección ${idx + 1}`;
+    const dataLabel = el.getAttribute('data-section') || el.getAttribute('aria-label');
+    if (dataLabel) return dataLabel.trim().slice(0, 36);
+    const heading = el.querySelector('h1, h2, h3');
+    if (heading && heading.innerText) {
+      const clean = heading.innerText.replace(/\s+/g, ' ').trim();
+      if (clean.length > 2) return clean.slice(0, 36);
+    }
+    if (el.id) {
+      return el.id.replace(/[-_]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()).slice(0, 36);
+    }
+    if (el.tagName === 'HEADER') return 'Portada / Hero';
+    if (el.tagName === 'FOOTER') return 'Pie de Página / Contacto';
+    return `Sección ${idx + 1}`;
+  }
+
+  function setupSectionAndScrollObservers() {
+    updateScrollDepth();
+    window.addEventListener('scroll', updateScrollDepth, { passive: true });
+
+    try {
+      const candidates = Array.from(
+        document.querySelectorAll('header, section, [id*="roi"], [id*="calc"], [id*="map"], [id*="price"], [id*="portfolio"], [id*="service"], [id*="contact"], footer')
+      ).slice(0, 20);
+
+      if ('IntersectionObserver' in window && candidates.length > 0) {
+        const labelMap = new Map();
+        candidates.forEach((el, idx) => {
+          labelMap.set(el, resolveSectionLabel(el, idx));
+        });
+
+        const obs = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              const name = labelMap.get(entry.target);
+              if (!name) return;
+              if (entry.isIntersecting && entry.intersectionRatio >= 0.25) {
+                currentVisibleSections.add(name);
+              } else {
+                currentVisibleSections.delete(name);
+              }
+            });
+          },
+          { threshold: [0.25, 0.6] }
+        );
+
+        candidates.forEach((el) => obs.observe(el));
+      }
+    } catch (e) {}
+
+    // 1-second ticker for active reading time & per-section dwell time
+    setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        activeVisibleSec += 1;
+        currentVisibleSections.forEach((secName) => {
+          sectionDwellSeconds[secName] = (sectionDwellSeconds[secName] || 0) + 1;
+        });
+      }
+    }, 1000);
+  }
+
+  function buildSectionsViewedTelemetryArray() {
+    const items = [];
+    updateScrollDepth();
+    items.push(`📊 Scroll leído: ${maxScrollPct || 15}%`);
+    if (activeVisibleSec > 0) {
+      items.push(`👁️ Pantalla activa: ${activeVisibleSec}s`);
+    }
+    if (systemTimeZone) {
+      items.push(`🌍 Zona: ${systemTimeZone}`);
+    }
+    if (deviceLanguages) {
+      items.push(`🗣️ Idioma: ${deviceLanguages}`);
+    }
+    if (clientGeo.isp) {
+      items.push(`🏢 ISP/Red: ${clientGeo.isp.slice(0, 42)}`);
+    }
+    if (networkConnectionText) {
+      items.push(`📡 Conexión: ${networkConnectionText}`);
+    }
+    if (gpuName) {
+      items.push(`💎 GPU: ${gpuName}`);
+    }
+    if (batteryStatusText) {
+      items.push(`🔋 Batería: ${batteryStatusText}`);
+    }
+
+    const topSections = Object.entries(sectionDwellSeconds)
+      .filter(([, sec]) => sec >= 2)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 6);
+
+    topSections.forEach(([name, sec]) => {
+      items.push(`📌 ${name}: ${sec}s`);
+    });
+
+    return items;
+  }
 
   async function ensureSiteRegistered() {
     const cleanUrl = window.location.href.split('?')[0];
@@ -188,9 +443,8 @@
         if (d1 && d1.ip) {
           const ispInfo = [
             d1.connection && d1.connection.isp,
-            d1.connection && d1.connection.org,
-            d1.connection && d1.connection.domain
-          ].filter(Boolean).join(' ');
+            d1.connection && d1.connection.org
+          ].filter(Boolean).join(' / ');
           return {
             ip: d1.ip,
             city: d1.city || 'Ciudad',
@@ -217,34 +471,84 @@
     return { ip: 'direct_' + visitorId.slice(-6), city: 'Acceso Directo', country: 'Web / Móvil', isp: '' };
   }
 
-  function setupConversionListeners() {
+  function setupConversionAndIntentListeners() {
+    // 1. Click conversions & high-intent buttons
     document.addEventListener('click', (e) => {
       const target = e.target ? e.target.closest('a, button, [role="button"], input[type="submit"]') : null;
       if (!target) return;
       const href = (target.getAttribute('href') || '').toLowerCase();
-      const text = (target.innerText || target.value || target.getAttribute('aria-label') || '').trim().toLowerCase();
+      const text = (target.innerText || target.value || target.getAttribute('aria-label') || '').trim().replace(/\s+/g, ' ');
+      const lowerText = text.toLowerCase();
 
       let actionLabel = null;
+      let isHardConversion = false;
+
       if (href.includes('wa.me') || href.includes('whatsapp.com')) {
-        actionLabel = 'Clic Reserva/Contacto WhatsApp';
+        actionLabel = '💬 Clic Contacto WhatsApp';
+        isHardConversion = true;
       } else if (href.startsWith('tel:')) {
-        actionLabel = 'Llamada Directa';
+        actionLabel = '📞 Llamada Telefónica Directa';
+        isHardConversion = true;
+      } else if (href.startsWith('mailto:')) {
+        actionLabel = '✉️ Clic en Correo Electrónico';
+        isHardConversion = true;
+      } else if (href.endsWith('.pdf') || lowerText.includes('pdf') || lowerText.includes('brochure') || lowerText.includes('dossier')) {
+        actionLabel = '📄 Descarga Brochure / PDF: ' + text.slice(0, 28);
+        isHardConversion = true;
       } else if (
-        /comprar|reservar|book|appointment|cita|cotizar|ordenar|pedido|checkout|pagar|claim|solicitar|oferta|inquire|dossier|brochure|buy/i.test(text)
+        /comprar|reservar|book|appointment|cita|cotizar|ordenar|pedido|checkout|pagar|claim|solicitar|oferta|inquire|buy/i.test(lowerText)
       ) {
-        actionLabel = 'Acción: ' + (target.innerText || 'Reserva/Compra').trim().slice(0, 32);
+        actionLabel = '🛒 Acción: ' + (text || 'Reserva/Compra').slice(0, 32);
+        isHardConversion = true;
       }
 
       if (actionLabel) {
-        recordConversion(actionLabel);
+        recordConversion(actionLabel, isHardConversion);
       }
     }, true);
 
+    // 2. Form Submissions
     document.addEventListener('submit', (e) => {
       const form = e.target;
       if (form && form.id !== 'project-form') {
-        recordConversion('Formulario Enviado / Reserva');
+        recordConversion('📝 Formulario Enviado / Solicitud', true);
       }
+    }, true);
+
+    // 3. Silent Copy Detection (100% passive via window.getSelection, zero browser alerts)
+    document.addEventListener('copy', () => {
+      try {
+        const selected = (window.getSelection && window.getSelection().toString() || '').trim().replace(/\s+/g, ' ');
+        if (selected && selected.length >= 3) {
+          recordConversion('📋 Copió texto: "' + selected.slice(0, 36) + '"', false);
+        }
+      } catch (e) {}
+    }, true);
+
+    // 4. Calculator / Simulator / Filter Interaction Detection
+    document.addEventListener('change', (e) => {
+      try {
+        const el = e.target;
+        if (!el || !el.tagName) return;
+        const type = (el.getAttribute('type') || '').toLowerCase();
+        if (el.tagName === 'SELECT' || type === 'range' || type === 'number' || el.classList.contains('simulator-input')) {
+          const val = String(el.value || '').trim();
+          const name = (el.getAttribute('name') || el.getAttribute('id') || el.getAttribute('aria-label') || 'Filtro/Simulador').slice(0, 22);
+          if (val) {
+            recordConversion(`🎛️ Simuló ${name}: ${val.slice(0, 24)}`, false);
+          }
+        }
+      } catch (err) {}
+    }, true);
+
+    // 5. Video Play Detection
+    document.addEventListener('play', (e) => {
+      try {
+        const el = e.target;
+        if (el && el.tagName === 'VIDEO') {
+          recordConversion('🎬 Reprodujo Video en Página', false);
+        }
+      } catch (err) {}
     }, true);
   }
 
@@ -272,15 +576,18 @@
     });
   }
 
-  function recordConversion(label) {
+  function recordConversion(label, countAsConversion = true) {
     if (isBlockedSource) return;
-    conversionsCount += 1;
+    if (countAsConversion) {
+      conversionsCount += 1;
+      sessionStorage.setItem(convKey, String(conversionsCount));
+    }
     conversionEvents.push({
       label: label,
       at: new Date().toISOString()
     });
-    sessionStorage.setItem(convKey, String(conversionsCount));
-    sessionStorage.setItem(convEventsKey, JSON.stringify(conversionEvents.slice(-20)));
+    conversionEvents = conversionEvents.slice(-30);
+    sessionStorage.setItem(convEventsKey, JSON.stringify(conversionEvents));
     if (!isTrackingActive) {
       hasHumanInteracted = true;
       hasPassedDwellGate = true;
@@ -290,7 +597,7 @@
     }
   }
 
-  window.recordTecnoSpyConversion = recordConversion;
+  window.recordTecnoSpyConversion = (label) => recordConversion(label, true);
 
   function listenForHumanProof() {
     const onHumanEvent = (e) => {
@@ -306,9 +613,7 @@
   }
 
   async function initTelemetry() {
-    const legacyPanel = document.getElementById('tecno-universal-spy-panel');
-    if (legacyPanel) legacyPanel.remove();
-
+    purgeAnyOnSiteUi();
     ensureSiteRegistered();
 
     if (localStorage.getItem('tecno_spy_admin_excluded') === 'true' || isAutomatedBotEnv()) {
@@ -319,8 +624,9 @@
     sessionStartTime = parseInt(sessionStorage.getItem(startKey) || String(Date.now()), 10);
     sessionStorage.setItem(startKey, String(sessionStartTime));
 
+    setupSectionAndScrollObservers();
     listenForHumanProof();
-    setupConversionListeners();
+    setupConversionAndIntentListeners();
 
     setTimeout(() => {
       if (document.visibilityState !== 'hidden') {
@@ -354,8 +660,9 @@
       country: clientGeo.country,
       device: getDeviceInfo(),
       user_agent: (navigator.userAgent || '').slice(0, 250),
-      referrer: (document.referrer || 'Directo').slice(0, 200),
+      referrer: getOriginAndProspectAttribution().slice(0, 200),
       duration_seconds: durationSec,
+      sections_viewed: buildSectionsViewedTelemetryArray(),
       conversions_count: conversionsCount,
       conversion_events: conversionEvents,
       is_active: true,
@@ -382,6 +689,7 @@
     const durationSec = Math.max(4, Math.round((Date.now() - sessionStartTime) / 1000));
     const payload = {
       duration_seconds: durationSec,
+      sections_viewed: buildSectionsViewedTelemetryArray(),
       conversions_count: conversionsCount,
       conversion_events: conversionEvents,
       is_active: !isClosing,
